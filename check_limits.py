@@ -15,8 +15,6 @@ class BatteryParameter:
         return self.lower_limit <= self.value <= self.upper_limit
 
     def get_warning_message(self):
-        if not self.enable_warning:
-            return ''
         
         if self.value <= self.lower_limit + self.warning_tolerance:
             return f'Warning: {self.name} approaching discharge!'
