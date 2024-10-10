@@ -38,14 +38,20 @@ class Battery:
         self.soc = BatteryParameter("State of Charge", soc, SOC_LIMITS)
         self.charge_rate = BatteryParameter("Charge Rate", charge_rate, CHARGE_RATE_LIMITS)
 
+    def check_parameter(self, parameter):
+        is_ok, message = parameter.is_ok()
+        if not is_ok:
+            return False, message
+        if message: 
+            print(message)
+        return True, ''
+
     def is_battery_ok(self):
         parameters = [self.temperature, self.soc, self.charge_rate]
         for parameter in parameters:
-            is_ok, message = parameter.is_ok()
-            if not is_ok:
-                return False, message
-            if message:  # In case of warning
-                print(message)
+            result, message = self.check_parameter(parameter)
+            if not result:
+                return result, message
         return True, "Battery is OK"
 
 if __name__ == '__main__':
